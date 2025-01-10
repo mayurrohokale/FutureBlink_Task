@@ -7,7 +7,7 @@
 
 ## Key Features
 
-- **Create an Account**: Users can create and Account or Login in an account.
+- **User Authentication**: Users can register for an account or log in to access the platform.
 - **Design Email Sequence**: Users can create and visualize an email flow using the flowchart interface.
 - **Cold Email & Lead Source Nodes**: Add Cold Email and Lead Source as nodes to the flowchart.
 - **Wait/Delay Node**: Users can schedule email delays with the Wait/Delay node.

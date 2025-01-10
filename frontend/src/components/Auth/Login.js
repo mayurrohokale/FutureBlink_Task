@@ -14,7 +14,7 @@ const Cstbutton = ({ text, disabled }) => {
     <button
       type="submit"
       className={`hover:shadow-xl mt-4 text-white font-bold py-2 px-6 rounded text-xl ${
-        disabled ? "bg-gray-400" : "bg-black"
+        disabled ? "bg-gray-400" : "bg-blue-500"
       }`}
       disabled={disabled}
     >

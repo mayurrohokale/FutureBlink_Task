@@ -11,7 +11,7 @@ const BASE_URL = process.env.REACT_APP_API_KEY || "http://localhost:8000";
 const Cstbutton = ({ text, disabled }) => {
   return (
     <button 
-      className={`hover:shadow-xl mt-4 text-white font-bold py-2 px-6 rounded text-xl ${disabled ? 'bg-gray-400' : 'bg-[#2196F3]'}`}
+      className={`hover:shadow-xl mt-4 text-white font-bold py-2 px-6 rounded text-xl ${disabled ? 'bg-gray-400' : 'bg-blue-500'}`}
       disabled={disabled}
     >
       {text}
@@ -145,6 +145,7 @@ export default function Register() {
       })
       setTimeout(() => {
         navigate('/');
+        window.location.reload();
       }, 2000); 
     } catch (error) {
       

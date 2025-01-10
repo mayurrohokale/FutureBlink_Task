@@ -19,10 +19,12 @@ const EmailPopup = ({ onSubmit }) => {
       // Pass the entire template object to onSubmit
       onSubmit(selectedTemplate);
     }
+
+   
   };
 
   return (
-    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-5 border border-gray-300 rounded shadow-lg z-50">
+    <div className="fixed w-[250px] md:w-[500px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-5 border border-gray-300 rounded shadow-lg z-50">
       <h3 className="mb-3">Select Email Template</h3>
       <select
         value={selectedTemplateId}

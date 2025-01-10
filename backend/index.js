@@ -267,7 +267,7 @@ app.post("/api/sequence", async (req, res) => {
             "send email",
             {
               to: email,
-              subject: subject || name, // Use name as fallback if subject is not provided
+              subject: subject || name, 
               body: body || '',
               templateId: node.data.id
             }

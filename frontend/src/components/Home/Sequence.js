@@ -20,6 +20,9 @@ import { toast, ToastContainer } from "react-toastify";
 import { useAppState } from "../../utils/appState";
 import Axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
+import { IoRocketOutline } from "react-icons/io5";
+
+
 
 const BASE_URL = process.env.REACT_APP_API_KEY || "http://localhost:8000";
 
@@ -214,7 +217,7 @@ const FlowEditor = () => {
   }, [onAddNode, setNodes]);
 
   const NodeDialog = () => (
-    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-5 border border-gray-300 rounded shadow-lg z-50">
+    <div className="fixed w-[250px] md:w-[500px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-5 border border-gray-300 rounded shadow-lg z-50 ">
       <h3 className="mb-3">Select Node Type</h3>
       <select
         value={selectedOption}
@@ -278,11 +281,10 @@ const FlowEditor = () => {
         <h1 className="font-bold font-josiefin text-xs md:text-md">
           Create Email Marketing Sequence Flow
         </h1>
-        <Cstbutton
-          text="Save & Schedule"
-          className="text-white bg-blue-500 text-xs md:text-md font-semibold p-1 md:p-2 rounded-md"
-          onClick={handleSaveandSubmit}
-        />
+        <button  className="text-white flex items-center text-center gap-1 bg-blue-500 text-xs md:text-md font-semibold p-1 md:p-2 rounded-md"
+        onClick={handleSaveandSubmit}
+        ><IoRocketOutline/>Save & Schedule</button>
+       
       </div>
       <div className="w-full h-[80vh] md:h-[90vh]">
         <ReactFlow
@@ -292,6 +294,7 @@ const FlowEditor = () => {
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
+          fitView
         >
           <Background />
           <Controls />

@@ -25,7 +25,7 @@ export default function Home() {
               <Link to="/login">
                 <Cstbutton
                   text="Login"
-                  className="w-20 lg:w-32 bg-black hover:bg-gray-700 border-[2px] border-black text-white font-bold p-2 md:p-4 rounded-md"
+                  className="w-20 lg:w-32 bg-blue-500 hover:bg-blue-600 border-[2px] border-blue-500 text-white font-bold p-2 md:p-4 rounded-md"
                 />
               </Link>
               <Link to="/register">

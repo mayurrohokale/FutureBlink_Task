@@ -17,9 +17,9 @@ function DelayPopup({ onSubmit, onCancel }) {
   };
 
   return (
-    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-5 rounded-md shadow-lg z-50">
+    <div className="fixed w-[250px] md:w-[500px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-5 rounded-md shadow-lg z-50">
       <input
-        type="text"
+        type="number"
         value={waitFor}
         onChange={(e) => setWaitFor(e.target.value)}
         placeholder="Wait For"
@@ -43,7 +43,7 @@ function DelayPopup({ onSubmit, onCancel }) {
         </button>
         <button
           onClick={handleSubmit}
-          className="px-3 py-1 bg-teal-500 text-white rounded"
+          className="px-3 py-1 bg-blue-500 text-white rounded"
         >
           Submit
         </button>
