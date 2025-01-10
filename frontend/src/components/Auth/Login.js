@@ -40,7 +40,7 @@ const CustomInput = ({
       <div className="relative">
         <span className="absolute left-4 top-4 text-gray-500">{icon}</span>
         <input
-          className="border border-gray-300 hover:border-[#2196F3] rounded shadow-lg px-10 py-3 w-full"
+          className="border border-gray-300 hover:border-black rounded shadow-lg px-10 py-3 w-full"
           type={type}
           placeholder={placeholder}
           value={value}
@@ -140,9 +140,9 @@ export default function Login() {
 
   return (
     <div className="flex justify-center items-center md:h-screen p-4">
-      <div className="shadow-2xl border hover:border-blue-500 p-5 md:p-10 rounded-md flex-col justify-center flex md:flex-row gap-14">
+      <div className="shadow-2xl border hover:border-black p-5 md:p-10 rounded-md flex-col justify-center flex md:flex-row gap-14">
         <div>
-          <h1 className="font-bold text-3xl">Login</h1>
+          <h1 className="font-bold text-3xl items-center text-center">Login</h1>
           <form onSubmit={handleLogin}>
             <div className="text-start flex flex-col gap-4">
               <CustomInput
@@ -166,10 +166,13 @@ export default function Login() {
                 icon={<FaLock />}
               />
             </div>
+            <div className="flex justify-center">
             <Cstbutton text="Sign In" disabled={!isFormValid} />
+            </div>
+            
           </form>
           <div className="py-4">
-            <p className="" >
+            <p className="flex justify-center" >
               Not Registered? <Link to="/register" className="underline text-blue-500" >Register Now!</Link>
             </p>
            

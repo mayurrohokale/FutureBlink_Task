@@ -1,0 +1,6 @@
+[
+    { "id": "template1", "name": "Welcome Email", "body": "Welcome to Future Blink! We are excited to have you with us. Explore our platform for more updates and opportunities." },
+    { "id": "template2", "name": "Follow-Up Email", "body": "Follow-up on your existing task. Please review the progress and let us know if there’s anything more we can assist with." },
+    { "id": "template3", "name": "Offer Email", "body": "We are offering a 30% discount on all purchases. Don’t miss out! Grab the offer before it expires." }
+  ]
+  

@@ -26,7 +26,7 @@ const CustomInput = ({ label, type, placeholder, value, onChange, toggleVisibili
       <div className='relative'>
       <span className="absolute left-4 top-4 text-gray-500">{icon}</span>
       <input
-        className="border border-gray-300 hover:border-[#2196F3] rounded shadow-lg px-10 py-3 w-full"
+        className="border border-gray-300 hover:black rounded shadow-lg px-10 py-3 w-full"
         type={type}
         placeholder={placeholder}
         value={value}
@@ -165,9 +165,9 @@ export default function Register() {
 
   return (
     <div className="flex justify-center items-center md:h-screen p-4">
-      <div className="shadow-2xl border hover:border-blue-500 p-5 md:p-10 rounded-md flex-col flex md:flex-row gap-14">
+      <div className="shadow-2xl border hover:border-black p-5 md:p-10 rounded-md flex-col flex md:flex-row gap-14">
         <div>
-          <h1 className="font-bold text-3xl">Register!</h1>
+          <h1 className="font-bold text-3xl text-center items-center">Register!</h1>
           <form onSubmit={handleRegister}>
             <div className="text-start flex flex-col gap-4">
               <CustomInput
@@ -219,9 +219,11 @@ export default function Register() {
               {passwordMismatchError && <p className="text-red-500">{passwordMismatchError}</p>}
             </div>
             
-            <Cstbutton text="Sign Up" disabled={isLoading || !isFormValid} />
+            <div className="flex justify-center">
+              <Cstbutton text="Sign Up" disabled={isLoading || !isFormValid} />
+            </div>
           </form>
-          <p className="py-4">
+          <p className="py-4 flex justify-center">
             Already Registered? <Link to="/login" className='underline text-blue-500'>Login!</Link>
           </p>
         </div>

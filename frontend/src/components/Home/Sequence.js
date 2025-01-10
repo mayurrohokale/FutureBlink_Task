@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo } from 'react';
+import React, { useState, useCallback, memo } from "react";
 import {
   ReactFlow,
   Controls,
@@ -8,17 +8,18 @@ import {
   addEdge,
   Handle,
   Position,
-} from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
-import LoadSource from '../NodeTypes/LoadSource';
-import ColdEmail from '../NodeTypes/ColdEmail';
-import Delay from '../NodeTypes/Delay';
-import Cstbutton from '../reusables/CstButton';
-import EmailPopup from '../PopUp/EmailPopup';
-import DelayPopup from '../PopUp/DelayPopup';
-import { useAppState } from '../../utils/appState';
-import  Axios  from 'axios';
-
+} from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
+import LoadSource from "../NodeTypes/LoadSource";
+import ColdEmail from "../NodeTypes/ColdEmail";
+import Delay from "../NodeTypes/Delay";
+import Cstbutton from "../reusables/CstButton";
+import EmailPopup from "../PopUp/EmailPopup";
+import DelayPopup from "../PopUp/DelayPopup";
+import { toast, ToastContainer } from "react-toastify";
+import { useAppState } from "../../utils/appState";
+import Axios from "axios";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddButtonNode = memo(({ data, isConnectable }) => {
   return (
@@ -38,8 +39,6 @@ const AddButtonNode = memo(({ data, isConnectable }) => {
   );
 });
 
-
-
 const nodeTypes = {
   addButton: AddButtonNode,
   loadSourceNode: LoadSource,
@@ -49,25 +48,25 @@ const nodeTypes = {
 
 const initialNodes = [
   {
-    id: '1',
-    type: 'loadSourceNode',
-    data: { label: 'Leads From', role: 'Tech Lead' },
+    id: "1",
+    type: "loadSourceNode",
+    data: { label: "Leads From", role: "Tech Lead" },
     position: { x: 50, y: 50 },
   },
   {
-    id: 'add-button',
-    type: 'addButton',
-    data: { label: '' },
+    id: "add-button",
+    type: "addButton",
+    data: { label: "" },
     position: { x: 50, y: 150 },
-  }
+  },
 ];
 
 const initialEdges = [
   {
-    id: 'e1-add',
-    source: '1',
-    target: 'add-button',
-    type: 'straight',
+    id: "e1-add",
+    source: "1",
+    target: "add-button",
+    type: "straight",
   },
 ];
 
@@ -75,35 +74,35 @@ const FlowEditor = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [isCreatingNode, setIsCreatingNode] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState("");
   const [showInputPopup, setShowInputPopup] = useState(false);
   const [newNodeData, setNewNodeData] = useState(null);
-  const {user, setUser} = useAppState();
-  const [scheduledEmail, setScheduledEmail] = useState(null);
-
-   
-
+  const { user } = useAppState();
+  // const [scheduledEmail, setScheduledEmail] = useState(null);
 
   const handleSaveandSubmit = async () => {
-   
-    console.log(nodes)
-    try{
-      const response = await Axios.post('http://localhost:8000/api/sequence',{
-      email: user.email, 
-      sequence: nodes,
+    console.log(nodes);
+    try {
+      const response = await Axios.post("http://localhost:8000/api/sequence", {
+        email: user.email,
+        sequence: nodes,
       });
       console.log(response);
-
-    }catch(err){
+      
+      if (response?.data?.message === "Sequence saved and scheduled successfully") {
+        toast.success(response?.data?.message || "Sequence Saved ", {
+          position: "top-center",
+        })}
+          
+    } catch (err) {
       console.log(err);
+      toast.error("An error occurred while saving the sequence.", {
+        position: "top-center",
+      });
     }
-  }
+  };
 
-
-  console.log(nodes)
-
-
-
+  console.log(nodes);
 
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
@@ -112,23 +111,27 @@ const FlowEditor = () => {
 
   const onAddNode = useCallback(() => {
     setIsCreatingNode(true);
-    setSelectedOption('');
+    setSelectedOption("");
   }, []);
 
   const handleCreateNode = useCallback(() => {
     if (!selectedOption) {
-      alert('Please select an option before creating the node.');
+      alert("Please select an option before creating the node.");
       return;
     }
 
-    const newNodeId = (nodes.filter(n => n.id !== 'add-button').length + 1).toString();
+    const newNodeId = (
+      nodes.filter((n) => n.id !== "add-button").length + 1
+    ).toString();
     const lastNodeId = nodes[nodes.length - 2].id;
     const lastNodePosition = nodes[nodes.length - 2].position;
 
-    const nodeType = selectedOption === 'Cold Email' ? 'coldEmailNode' : 'delayNode';
-    const initialData = selectedOption === 'Cold Email' 
-      ? { label: selectedOption, email: '' }
-      : { label: selectedOption, waitFor: '', waitType: '' };
+    const nodeType =
+      selectedOption === "Cold Email" ? "coldEmailNode" : "delayNode";
+    const initialData =
+      selectedOption === "Cold Email"
+        ? { label: selectedOption, email: "" }
+        : { label: selectedOption, waitFor: "", waitType: "" };
 
     setNewNodeData({
       id: newNodeId,
@@ -136,67 +139,71 @@ const FlowEditor = () => {
       data: initialData,
       position: { x: lastNodePosition.x, y: lastNodePosition.y + 100 },
       lastNodeId,
-      lastNodePosition
+      lastNodePosition,
     });
 
     setIsCreatingNode(false);
     setShowInputPopup(true);
   }, [nodes, selectedOption]);
 
-  const handleInputSubmit = useCallback((inputData) => {
-    const { id, type, data, position, lastNodeId, lastNodePosition } = newNodeData;
-    
-    const updatedNode = {
-      id,
-      type,
-      data: { ...data, ...inputData },
-      position
-    };
+  const handleInputSubmit = useCallback(
+    (inputData) => {
+      const { id, type, data, position, lastNodeId, lastNodePosition } =
+        newNodeData;
 
-    const addButtonNode = {
-      id: 'add-button',
-      type: 'addButton',
-      data: { label: '', onAdd: onAddNode },
-      position: { x: lastNodePosition.x, y: lastNodePosition.y + 200 }
-    };
+      const updatedNode = {
+        id,
+        type,
+        data: { ...data, ...inputData },
+        position,
+      };
 
-    const newEdges = [
-      {
-        id: `e${lastNodeId}-${id}`,
-        source: lastNodeId,
-        target: id,
-        type: 'straight'
-      },
-      {
-        id: `e${id}-add`,
-        source: id,
-        target: 'add-button',
-        type: 'straight'
-      }
-    ];
+      const addButtonNode = {
+        id: "add-button",
+        type: "addButton",
+        data: { label: "", onAdd: onAddNode },
+        position: { x: lastNodePosition.x, y: lastNodePosition.y + 200 },
+      };
 
-    setNodes((nds) => [
-      ...nds.filter(n => n.id !== 'add-button'),
-      updatedNode,
-      addButtonNode
-    ]);
-    
-    setEdges((eds) => [
-      ...eds.filter(e => e.target !== 'add-button'),
-      ...newEdges
-    ]);
+      const newEdges = [
+        {
+          id: `e${lastNodeId}-${id}`,
+          source: lastNodeId,
+          target: id,
+          type: "straight",
+        },
+        {
+          id: `e${id}-add`,
+          source: id,
+          target: "add-button",
+          type: "straight",
+        },
+      ];
 
-    setShowInputPopup(false);
-    setNewNodeData(null);
-  }, [newNodeData, onAddNode, setNodes, setEdges]);
+      setNodes((nds) => [
+        ...nds.filter((n) => n.id !== "add-button"),
+        updatedNode,
+        addButtonNode,
+      ]);
+
+      setEdges((eds) => [
+        ...eds.filter((e) => e.target !== "add-button"),
+        ...newEdges,
+      ]);
+
+      setShowInputPopup(false);
+      setNewNodeData(null);
+    },
+    [newNodeData, onAddNode, setNodes, setEdges]
+  );
 
   React.useEffect(() => {
     setNodes((nds) =>
       nds.map((node) => {
-        if (node.id === 'add-button') {
+        if (node.id === "add-button") {
           return {
             ...node,
-            data: { ...node.data, onAdd: onAddNode }
+            data: { ...node.data, onAdd: onAddNode },
           };
         }
         return node;
@@ -234,65 +241,64 @@ const FlowEditor = () => {
   );
 
   const InputPopup = () => {
-    
-
     const handleEmailSubmit = (emailData) => {
       handleInputSubmit(emailData);
     };
 
     const handleDelaySubmit = (delayData) => {
       handleInputSubmit(delayData);
-    }
+    };
 
-    console.log("inside sequence")
-  
+    console.log("inside sequence");
 
     return (
       <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-5 rounded shadow-lg z-50">
-        {newNodeData?.type === 'coldEmailNode' ? (
+        {newNodeData?.type === "coldEmailNode" ? (
           <EmailPopup
-          onSubmit={handleEmailSubmit}
-          onCancel={() => setShowInputPopup(false)}
+            onSubmit={handleEmailSubmit}
+            onCancel={() => setShowInputPopup(false)}
           />
         ) : (
           <>
-           <DelayPopup 
-           onSubmit={handleDelaySubmit}
-            onCancel={() => setShowInputPopup(false)}
-           />
+            <DelayPopup
+              onSubmit={handleDelaySubmit}
+              onCancel={() => setShowInputPopup(false)}
+            />
           </>
         )}
-       
       </div>
     );
   };
 
   return (
     <div>
-        <div className='flex justify-between px-6 p-4 border border-b-1 border-gray-400'>
-            <h1 className='font-bold font-josiefin text-md'>Create Email Marketing Sequence Flow</h1>
-            <Cstbutton text="Save & Schedule" className="text-white bg-blue-500 text-lg font-bold p-2 rounded-md"
-            onClick={handleSaveandSubmit}
-            />
-            
-        </div>
-    <div className="w-full h-[90vh]">
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        nodeTypes={nodeTypes}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        
-      >
-        <Background />
-        <Controls />
-      </ReactFlow>
+      <div className="flex justify-between px-6 p-4 border border-b-1 border-gray-400">
+        <h1 className="font-bold font-josiefin text-md">
+          Create Email Marketing Sequence Flow
+        </h1>
+        <Cstbutton
+          text="Save & Schedule"
+          className="text-white bg-blue-500 text-md font-semibold p-2 rounded-md"
+          onClick={handleSaveandSubmit}
+        />
+      </div>
+      <div className="w-full h-[90vh]">
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          nodeTypes={nodeTypes}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+        >
+          <Background />
+          <Controls />
+        </ReactFlow>
 
-      {isCreatingNode && <NodeDialog />}
-      {showInputPopup && <InputPopup />}
-    </div>
+        {isCreatingNode && <NodeDialog />}
+        {showInputPopup && <InputPopup />}
+      </div>
+      <ToastContainer />
     </div>
   );
 };

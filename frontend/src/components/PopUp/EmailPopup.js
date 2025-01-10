@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
+import emailTemplates from '../SampleData/emailTemplates.json';
 
 const EmailPopup = ({ onSubmit }) => {
   const [selectedTemplateId, setSelectedTemplateId] = useState('');
-
-  // Mock email templates
-  const emailTemplates = [
-    { id: 'template1', name: 'Welcome Email', body: 'welcome to Future Blink' },
-    { id: 'template2', name: 'Follow-Up Email', body: 'Follow-Up of your Existing Task' },
-    { id: 'template3', name: 'Offer Email', body: 'we offer 30% for this ' },
-  ];
 
   const handleSubmit = () => {
     if (!selectedTemplateId) {

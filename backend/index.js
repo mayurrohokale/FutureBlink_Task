@@ -8,12 +8,15 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Agenda = require("agenda");
 const Sequence = require("./schema/sequenceSchema");
-// const SequenceNodeSchema = require("./schema/sequenceNodeSchema")
+const crypto = require("crypto");
+
 
 const PORT = process.env.PORT || 8000;
 const MONGO_URL = process.env.mongourl || null;
 const JWT_SECRET =
   process.env.jwtsecret || crypto.randomBytes(64).toString("hex"); // Strong default JWT secret
+
+const agenda = new Agenda({ db: { address: MONGO_URL } });
 
 const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -24,7 +27,7 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-const frontendurl = process.env.FRONT_URL || "http://localhost:3000";
+// const frontendurl = process.env.FRONT_URL || "http://localhost:3000";
 const { ObjectId } = require("mongodb");
 const app = express();
 
@@ -44,22 +47,7 @@ mongoose
 
   
 
-  const agenda = new Agenda({ db: { address: MONGO_URL } });
 
-  // agenda.define("send email", async (job) => {
-  //   const { to, subject, body } = job.attrs.data;
-  //   try {
-  //     await transporter.sendMail({
-  //       from: process.env.EMAIL_USER,
-  //       to,
-  //       subject,
-  //       text: body,
-  //     });
-  //     console.log(`Email sent to ${to}`);
-  //   } catch (error) {
-  //     console.error(`Error sending email to ${to}:`, error);
-  //   }
-  // });
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "welcomeSir!" });
@@ -236,7 +224,7 @@ app.post("/api/sequence", async (req, res) => {
     // Filter out the add-button node and validate sequence
     const validNodes = sequence.filter(node => node.type !== 'addButton');
     
-    if (validNodes.length === 0) {
+    if (validNodes.length <= 2) {
       return res.status(400).json({ message: "Sequence must contain at least one valid node" });
     }
 
@@ -316,48 +304,6 @@ app.post("/api/sequence", async (req, res) => {
   }
 });
 
-// Update the Sequence Schema to match the new data structure
-// const SequenceNodeSchema = new mongoose.Schema({
-//   id: String,
-//   type: {
-//     type: String,
-//     enum: ['loadSourceNode', 'coldEmailNode', 'delayNode', 'addButton']
-//   },
-//   data: {
-//     label: String,
-//     role: String,          // for loadSourceNode
-//     email: String,         // for coldEmailNode
-//     id: String,           // template id for coldEmailNode
-//     name: String,         // for coldEmailNode
-//     subject: String,      // for coldEmailNode
-//     body: String,
-//      // for coldEmailNode
-//     waitFor: String,      // for delayNode
-//     waitType: String      // for delayNode
-//   },
-//   position: {
-//     x: Number,
-//     y: Number
-//   },
-//   measured: {
-//     width: Number,
-//     height: Number
-//   }
-// });
-
-// const SequenceSchema = new mongoose.Schema({
-//   email: {
-//     type: String,
-//     required: true
-//   },
-//   sequence: [SequenceNodeSchema],
-//   createdAt: {
-//     type: Date,
-//     default: Date.now
-//   }
-// });
-
-// const Sequence = mongoose.model('Sequence', SequenceSchema);
 
 app.get("/api/sequence", async (req, res) => {
   try {
