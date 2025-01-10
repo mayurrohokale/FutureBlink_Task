@@ -21,6 +21,8 @@ import { useAppState } from "../../utils/appState";
 import Axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 
+const BASE_URL = process.env.REACT_APP_API_KEY || "http://localhost:8000";
+
 const AddButtonNode = memo(({ data, isConnectable }) => {
   return (
     <div className="p-3 rounded bg-white border border-gray-300 w-[150px] text-center">
@@ -83,7 +85,7 @@ const FlowEditor = () => {
   const handleSaveandSubmit = async () => {
     console.log(nodes);
     try {
-      const response = await Axios.post("http://localhost:8000/api/sequence", {
+      const response = await Axios.post(`${BASE_URL}/api/sequence`, {
         email: user.email,
         sequence: nodes,
       });
