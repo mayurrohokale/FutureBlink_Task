@@ -13,9 +13,9 @@ export default function Home() {
       {!user ? (
         <div>
           <div className="flex flex-col items-center justify-center text-center min-h-screen bg-gray-100">
-            <h1 className="text-4xl font-bold mb-6 text-black font-courier">Future Blink</h1>
-            <div className="px-[250px]">
-              <p className="text-lg mb-6 font-medium font-inter">
+            <h1 className="text-xl md:text-4xl font-bold mb-6 text-black font-courier">Future Blink</h1>
+            <div className="px-4 md:px-[250px]">
+              <p className=" text-xs lg:text-lg mb-6 font-medium font-inter">
                 Design and implement your email marketing sequences with our
                 easy-to-use visual flowchart interface. Start creating automated
                 email campaigns and grow your business!
@@ -25,13 +25,13 @@ export default function Home() {
               <Link to="/login">
                 <Cstbutton
                   text="Login"
-                  className="w-32 bg-black hover:bg-gray-700 border-[2px] border-black text-white font-bold p-4 rounded-md"
+                  className="w-20 lg:w-32 bg-black hover:bg-gray-700 border-[2px] border-black text-white font-bold p-2 md:p-4 rounded-md"
                 />
               </Link>
               <Link to="/register">
                 <Cstbutton
                   text="Sign Up"
-                  className="w-32 border-black rounded-md border-[2px] p-4 font-bold hover:bg-gray-300"
+                  className="w-24 lg:w-32 border-black rounded-md border-[2px] p-2 md:p-4 font-bold hover:bg-gray-300"
                 />
               </Link>
             </div>

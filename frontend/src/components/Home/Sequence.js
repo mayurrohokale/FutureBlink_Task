@@ -272,17 +272,17 @@ const FlowEditor = () => {
 
   return (
     <div>
-      <div className="flex justify-between px-6 p-4 border border-b-1 border-gray-400">
-        <h1 className="font-bold font-josiefin text-md">
+      <div className="flex justify-between px-6 p-4 border border-b-1 border-gray-400 gap-1">
+        <h1 className="font-bold font-josiefin text-xs md:text-md">
           Create Email Marketing Sequence Flow
         </h1>
         <Cstbutton
           text="Save & Schedule"
-          className="text-white bg-blue-500 text-md font-semibold p-2 rounded-md"
+          className="text-white bg-blue-500 text-xs md:text-md font-semibold p-1 md:p-2 rounded-md"
           onClick={handleSaveandSubmit}
         />
       </div>
-      <div className="w-full h-[90vh]">
+      <div className="w-full h-[80vh] md:h-[90vh]">
         <ReactFlow
           nodes={nodes}
           edges={edges}

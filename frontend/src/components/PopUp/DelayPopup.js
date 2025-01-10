@@ -34,6 +34,7 @@ function DelayPopup({ onSubmit, onCancel }) {
         >
           <option value="Minutes">Minutes</option>
           <option value="Days">Days</option>
+          <option value="Hours">Hours</option>
         </select>
       </div>
       <div className="flex justify-end gap-2">
