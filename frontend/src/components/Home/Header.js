@@ -11,7 +11,7 @@ export default function Header() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUser(null);
-    setDropdownVisible(false); // Hide dropdown on logout
+    setDropdownVisible(false); 
   };
 
   const toggleDropdown = () => {

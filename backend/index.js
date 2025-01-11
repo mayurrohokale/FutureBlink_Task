@@ -14,7 +14,7 @@ const crypto = require("crypto");
 const PORT = process.env.PORT || 8000;
 const MONGO_URL = process.env.mongourl || null;
 const JWT_SECRET =
-  process.env.jwtsecret || crypto.randomBytes(64).toString("hex"); // Strong default JWT secret
+  process.env.jwtsecret || crypto.randomBytes(64).toString("hex"); 
 
 const agenda = new Agenda({ db: { address: MONGO_URL } });
 
@@ -161,7 +161,7 @@ agenda.define("send email", async (job) => {
   console.log("Agenda started");
 })();
 
-// Schema for Email Flow (if needed for saving the flowchart)
+
 const EmailFlowSchema = new mongoose.Schema({
   userId: { type: ObjectId, required: true },
   flowchart: { type: Object, required: true },
@@ -169,49 +169,6 @@ const EmailFlowSchema = new mongoose.Schema({
 });
 
 const EmailFlow = mongoose.model("EmailFlow", EmailFlowSchema);
-
-// app.post("/api/sequence", async (req, res) => {
-//   try {
-//     const { email, sequence } = req.body;
-
-//     if (!email || !sequence || sequence.length === 0) {
-//       return res.status(400).json({ message: "Email and sequence are required" });
-//     }
-
-//     const newSequence = new Sequence({ email, sequence });
-//     await newSequence.save();
-
-//     // Schedule Emails
-//     let delayTime = 0;
-//     for (const node of sequence) {
-//       if (node.type === "delay") {
-//         const { waitFor, waitType } = node.data;
-
-//         // Convert delay to milliseconds
-//         if (waitType === "minutes") delayTime += waitFor * 60 * 1000;
-//         if (waitType === "hours") delayTime += waitFor * 60 * 60 * 1000;
-//         if (waitType === "days") delayTime += waitFor * 24 * 60 * 60 * 1000;
-//       } else if (node.type === "coldEmail") {
-//         const { subject, emailContent } = node.data;
-
-//         agenda.schedule(new Date(Date.now() + delayTime), "send email", {
-//           to: email,
-//           subject,
-//           text: emailContent,
-//         });
-
-//         console.log(emailContent)
-//       }
-//     }
-
-//     res.status(200).json({ message: "Sequence saved and scheduled successfully" });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Internal Server Error" });
-//   }
-// });
-
-// API to Fetch All Sequences
 
 app.post("/api/sequence", async (req, res) => {
   try {
@@ -221,7 +178,6 @@ app.post("/api/sequence", async (req, res) => {
       return res.status(400).json({ message: "Valid email and sequence array are required" });
     }
 
-    // Filter out the add-button node and validate sequence
     const validNodes = sequence.filter(node => node.type !== 'addButton');
     
     if (validNodes.length <= 2) {
@@ -235,14 +191,14 @@ app.post("/api/sequence", async (req, res) => {
     });
     await newSequence.save();
 
-    // Schedule Emails
+    
     let delayTime = 0;
     
     for (const node of validNodes) {
       switch (node.type) {
         case 'delayNode':
           const { waitFor, waitType } = node.data;
-          // Convert delay to milliseconds
+        
           switch (waitType.toLowerCase()) {
             case 'minutes':
               delayTime += waitFor * 60 * 1000;
@@ -261,7 +217,7 @@ app.post("/api/sequence", async (req, res) => {
         case 'coldEmailNode':
           const { name, subject, body } = node.data;
           
-          // Schedule the email with the accumulated delay
+          // Schedule the email with the delay
           await agenda.schedule(
             new Date(Date.now() + delayTime),
             "send email",
@@ -281,7 +237,7 @@ app.post("/api/sequence", async (req, res) => {
           break;
 
         case 'loadSourceNode':
-          // Store the source information if needed
+          // Store the source information
           console.log(`Source: ${node.data.role}`);
           break;
 
@@ -335,39 +291,6 @@ app.post("/schedule-email", verifyToken, async (req, res) => {
   } catch (error) {
     console.error("Error scheduling email:", error);
     res.status(500).json({ message: "Failed to schedule email." });
-  }
-});
-
-// API to save the email flowchart
-app.post("/save-flowchart", verifyToken, async (req, res) => {
-  const { flowchart } = req.body;
-
-  if (!flowchart) {
-    return res.status(400).json({ message: "Flowchart data is required." });
-  }
-
-  try {
-    const emailFlow = new EmailFlow({
-      userId: req.user._id,
-      flowchart,
-    });
-    await emailFlow.save();
-
-    res.status(201).json({ message: "Flowchart saved successfully." });
-  } catch (error) {
-    console.error("Error saving flowchart:", error);
-    res.status(500).json({ message: "Failed to save flowchart." });
-  }
-});
-
-// API to fetch saved flowcharts
-app.get("/get-flowcharts", verifyToken, async (req, res) => {
-  try {
-    const flowcharts = await EmailFlow.find({ userId: req.user._id });
-    res.status(200).json({ message: "Flowcharts fetched successfully.", flowcharts });
-  } catch (error) {
-    console.error("Error fetching flowcharts:", error);
-    res.status(500).json({ message: "Failed to fetch flowcharts." });
   }
 });
 

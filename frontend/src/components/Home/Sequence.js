@@ -28,7 +28,7 @@ const BASE_URL = process.env.REACT_APP_API_KEY || "http://localhost:8000";
 
 const AddButtonNode = memo(({ data, isConnectable }) => {
   return (
-    <div className="p-3 rounded bg-white border border-gray-300 w-[150px] text-center">
+    <div className="p-3 rounded bg-white border border-gray-300 w-[180px] text-center">
       <Handle
         type="target"
         position={Position.Top}
@@ -217,7 +217,7 @@ const FlowEditor = () => {
   }, [onAddNode, setNodes]);
 
   const NodeDialog = () => (
-    <div className="fixed w-[250px] md:w-[500px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-5 border border-gray-300 rounded shadow-lg z-50 ">
+    <div className="fixed w-[250px] md:w-[500px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-5 border border-gray-300 rounded shadow-lg z-80  ">
       <h3 className="mb-3">Select Node Type</h3>
       <select
         value={selectedOption}
